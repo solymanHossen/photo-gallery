@@ -24,6 +24,114 @@ export interface User {
   updated_at: string;
 }
 
+/* Gallery Model Types */
+export interface Category {
+  id: number;
+  name: string;
+  slug: string;
+  description?: string;
+  color: string;
+  icon?: string;
+  order: number;
+  is_active: boolean;
+  photos_count?: number;
+  created_at: string;
+  updated_at: string;
+  deleted_at?: string;
+}
+
+export interface Tag {
+  id: number;
+  name: string;
+  slug: string;
+  description?: string;
+  color: string;
+  photos_count?: number;
+  created_at: string;
+  updated_at: string;
+  deleted_at?: string;
+}
+
+export interface ExifData {
+  make?: string;
+  model?: string;
+  lens?: string;
+  focalLength?: string;
+  aperture?: string;
+  shutterSpeed?: string;
+  iso?: number;
+  exposureTime?: string;
+  flash?: string;
+  whiteBalance?: string;
+  dateTime?: string;
+  gps?: {
+    latitude?: number;
+    longitude?: number;
+    altitude?: number;
+  };
+  [key: string]: any;
+}
+
+export interface Photo {
+  id: number;
+  user_id: number;
+  category_id?: number;
+  title: string;
+  slug: string;
+  description?: string;
+  file_path: string;
+  thumbnail_path?: string;
+  file_url: string;
+  thumbnail_url: string;
+  original_filename: string;
+  mime_type: string;
+  file_size: number;
+  width?: number;
+  height?: number;
+  exif_data?: ExifData;
+  alt_text?: string;
+  camera_model?: string;
+  lens?: string;
+  focal_length?: string;
+  aperture?: string;
+  shutter_speed?: string;
+  iso?: number;
+  taken_at?: string;
+  location?: string;
+  is_public: boolean;
+  is_featured: boolean;
+  views_count: number;
+  downloads_count: number;
+  likes_count: number;
+  created_at: string;
+  updated_at: string;
+  deleted_at?: string;
+  user?: User;
+  category?: Category;
+  tags?: Tag[];
+}
+
+/* Gallery Filter & Search Types */
+export interface PhotoFilters {
+  search?: string;
+  category?: number | string;
+  tag?: number | string;
+  user?: number | string;
+  is_featured?: boolean;
+  sort_by?: 'latest' | 'oldest' | 'most_viewed' | 'most_liked' | 'title';
+  per_page?: number;
+}
+
+export interface GalleryStats {
+  total_photos: number;
+  total_categories: number;
+  total_tags: number;
+  total_views: number;
+  total_downloads: number;
+  storage_used: number;
+}
+
+
 /* Pagination Types */
 export interface PaginationLink {
   url: string | null;
@@ -149,4 +257,93 @@ export interface ResetPasswordPageProps extends AuthPageProps {
 export interface ProfileEditPageProps extends PageProps {
   mustVerifyEmail: boolean;
   status?: string;
+}
+
+/* Gallery Page Props */
+export interface GalleryIndexPageProps extends PageProps {
+  photos: PaginatedData<Photo>;
+  categories: Category[];
+  tags: Tag[];
+  filters: PhotoFilters;
+  stats?: GalleryStats;
+}
+
+export interface PhotoShowPageProps extends PageProps {
+  photo: Photo;
+  relatedPhotos?: Photo[];
+}
+
+export interface PhotoCreatePageProps extends PageProps {
+  categories: Category[];
+  tags: Tag[];
+}
+
+export interface PhotoEditPageProps extends PageProps {
+  photo: Photo;
+  categories: Category[];
+  tags: Tag[];
+}
+
+export interface CategoryIndexPageProps extends PageProps {
+  categories: PaginatedData<Category>;
+}
+
+export interface CategoryShowPageProps extends PageProps {
+  category: Category;
+  photos: PaginatedData<Photo>;
+}
+
+export interface TagIndexPageProps extends PageProps {
+  tags: PaginatedData<Tag>;
+}
+
+export interface TagShowPageProps extends PageProps {
+  tag: Tag;
+  photos: PaginatedData<Photo>;
+}
+
+export interface DashboardPageProps extends PageProps {
+  stats: GalleryStats;
+  recentPhotos: Photo[];
+  featuredPhotos: Photo[];
+}
+
+/* Form Data Types */
+export interface PhotoFormData {
+  title: string;
+  description?: string;
+  category_id?: number;
+  tag_ids?: number[];
+  file?: File;
+  alt_text?: string;
+  is_public: boolean;
+  is_featured: boolean;
+}
+
+export interface CategoryFormData {
+  name: string;
+  description?: string;
+  color: string;
+  icon?: string;
+  order: number;
+  is_active: boolean;
+}
+
+export interface TagFormData {
+  name: string;
+  description?: string;
+  color: string;
+}
+
+/* Upload Progress Types */
+export interface UploadProgress {
+  loaded: number;
+  total: number;
+  percentage: number;
+}
+
+export interface UploadState {
+  isUploading: boolean;
+  progress: UploadProgress;
+  error?: string;
 }
